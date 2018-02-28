@@ -7,7 +7,7 @@ const DEFAULT_APP = API_AI_KEY ? API_AI(API_AI_KEY) : null;
 
 const app = express();
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
