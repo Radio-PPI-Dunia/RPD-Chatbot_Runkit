@@ -49,7 +49,7 @@ app.get("/", (req, res) => {
 
 app.get("/api/bot", (req, res) => {
     let query = URL.parse(req.url, true).query;
-    let app = (query.API_AI_KEY_JOLLY) ? API_AI(query.API_AI_KEY_JOLLY) : DEFAULT_APP;
+    let app = (query.API_AI_KEY) ? API_AI(query.API_AI_KEY) : DEFAULT_APP;
     let newSessionId = (!query.DF_SESSION_ID || query.DF_SESSION_ID === "0") ? Math.random().toString().slice(2) : 0;
     let sessionId = (query.DF_SESSION_ID && query.DF_SESSION_ID != "0") ? query.DF_SESSION_ID : newSessionId;
     let contexts = [{
