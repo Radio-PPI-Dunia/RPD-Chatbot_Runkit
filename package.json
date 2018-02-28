@@ -5,9 +5,9 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "nodemon server.js"
   },
-  "author": "Irham",
+  "author": "Muhamad Irham Prasetyo",
   "license": "ISC",
   "dependencies": {
     "apiai": "^4.0.3",

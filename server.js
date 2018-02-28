@@ -1,9 +1,9 @@
 const express = require("express");
-let { API_AI_KEY } = process.env;
+const bodyParser = require("body-parser");
+const { API_AI_KEY } = process.env || 'YOUR_API_KEY_DIALOGFLOW';
 const URL = require("url");
 const API_AI = require("apiai");
 const DEFAULT_APP = API_AI_KEY ? API_AI(API_AI_KEY) : null;
-const bodyParser = require("body-parser");
 
 const app = express();
 
@@ -26,7 +26,7 @@ let createTextMessage = (text) => {
 
 let handleResponse = (response) => ([ result, sessionId ]) => {
     let message;
-    if (result.source == 'agent'){
+    if (result.source === 'agent'){
         let randomMsg = randomize(result.fulfillment.message);
         message = randomMsg.payload ? randomMsg.payload : createTextMessage(randomMsg.speech);
     } else if (result.source === 'domains'){
@@ -49,14 +49,14 @@ app.get("/", (req, res) => {
 
 app.get("/api/bot", (req, res) => {
     let query = URL.parse(req.url, true).query;
-    let app = (query.API_AI_KEY) ? API_AI(query.API_AI_KEY) : DEFAULT_APP;
-    let newSessionId = (!query.DF_SESSION_ID || query.DF_SESSION_ID === '0') ? Math.random().toString().slice(2) : 0;
-    let sessionId = (query.DF_SESSION_ID && query.DF_SESSION_ID != '0') ? query.DF_SESSION_ID : newSessionId;
-    let context = [{
+    let app = (query.API_AI_KEY_JOLLY) ? API_AI(query.API_AI_KEY_JOLLY) : DEFAULT_APP;
+    let newSessionId = (!query.DF_SESSION_ID || query.DF_SESSION_ID === "0") ? Math.random().toString().slice(2) : 0;
+    let sessionId = (query.DF_SESSION_ID && query.DF_SESSION_ID != "0") ? query.DF_SESSION_ID : newSessionId;
+    let contexts = [{
         name: query.DF_CONTEXT || 'DEFAULT',
-        parameters: query
+        parameters: query,
     }];
-    let request = app.textRequest(query.queryString, { sessionId, context });
+    let request = app.textRequest(query.queryString, { sessionId, contexts });
 
     request.on('response', handleResponse(res));
     request.on('error', handleError(res));
