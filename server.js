@@ -9,6 +9,8 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
+app.set('view engine', 'ejs');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -42,10 +44,8 @@ let handleError = (response) => (error) => {
     sendResponse({ response, message });
 };
 
-// Routes
-app.get("/", (req, res) => {
-    res.send("Hello World!")
-});
+// Define all your routes, if you want to clean code, you can manage your dir yourself
+app.get("/", (req, res) => res.render('index'));
 
 app.get("/api/bot", (req, res) => {
     let query = URL.parse(req.url, true).query;
