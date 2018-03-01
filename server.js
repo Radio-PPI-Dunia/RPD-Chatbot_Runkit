@@ -16,30 +16,30 @@ app.use(bodyParser.urlencoded({ extended: true }));
 let randomize = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 let sendResponse = ({ response, message }) => {
-    response.writeHead(200, { 'Content-Type': 'application/json'});
+    response.writeHead(200, { 'Content-Type': 'application/json' });
     response.end(JSON.stringify(message));
 };
 
-let createTextMessage = (text) => {
-    return { message: [{ text }] };
+let createTextMsg = (text) => {
+    return { messages: [{ text }] };
 };
 
-let handleResponse = (response) => ([ result, sessionId ]) => {
+let handleResponse = (response) => ({ result, sessionId }) => {
     let message;
-    if (result.source === 'agent'){
-        let randomMsg = randomize(result.fulfillment.message);
-        message = randomMsg.payload ? randomMsg.payload : createTextMessage(randomMsg.speech);
-    } else if (result.source === 'domains'){
-        message = createTextMessage(result.fulfillment.speech);
+    if (result.source === 'agent') {
+        let randomMsg = randomize(result.fulfillment.messages);
+        message = randomMsg.payload ? randomMsg.payload : createTextMsg(randomMsg.speech);
+    } else if (result.source === 'domains') {
+        message = createTextMsg(result.fulfillment.speech);
     }
 
-    message.set_attributes = Object.assign(message.set_attributes || {}, {DF_SESSION_ID: sessionId});
+    message.set_attributes = Object.assign(message.set_attributes || {}, { DF_SESSION_ID: sessionId });
     sendResponse({ response, message });
 };
 
 let handleError = (response) => (error) => {
-    let message = ({ error });
-    sendResponse({ response, message});
+    let message = { error };
+    sendResponse({ response, message });
 };
 
 // Routes
