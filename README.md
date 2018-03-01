@@ -19,4 +19,6 @@ This is normal! Now grab url: https://yourdomain.com/api/bot into you Bot Engine
 
 > Note: it depends with your Bot engines setup
 
+5. According to my docs fo API.AI and my code, set up your attribute in user input queryString
+
 Need a free node server? Feel free deploy it to Heroku or drop a message irhamputraprasetyo@gmail.com
